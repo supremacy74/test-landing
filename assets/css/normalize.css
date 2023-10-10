@@ -13,6 +13,7 @@ button {
     border: 0;
     background: none;
     font-family: inherit;
+    color: inherit;
 }
 
 li {

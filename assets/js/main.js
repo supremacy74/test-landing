@@ -61,41 +61,49 @@ document.addEventListener('DOMContentLoaded', async () => {
     let isDragging = false
 
     balls.forEach((ball, index) => {
-        ball.addEventListener('mousedown', (event) => {
+        const startDrag = (event) => {
             isDragging = true
-
-            const offsetX = event.clientX - ball.getBoundingClientRect().left
+    
+            const clientX = event.touches ? event.touches[0].clientX : event.clientX
+            const offsetX = clientX - ball.getBoundingClientRect().left
             const sliderWidth = sliders[index].offsetWidth - ball.offsetWidth
             const sliderFill = sliders[index].querySelector('.slider-fill')
-
-            const onMouseMove = (event) => {
+    
+            const onMove = (event) => {
                 if (!isDragging) return
-
-                let newLeft = event.clientX - sliders[index].getBoundingClientRect().left - offsetX
-
+    
+                const clientX = event.touches ? event.touches[0].clientX : event.clientX
+                let newLeft = clientX - sliders[index].getBoundingClientRect().left - offsetX
+    
                 newLeft = Math.min(sliderWidth, newLeft)
                 newLeft = Math.max(0, newLeft)
-
+    
                 ball.style.left = newLeft + 'px'
                 sliderFill.style.width = newLeft + 'px'
-
+    
                 const percentage = newLeft / sliderWidth
                 const tariffsForSlider = groupedTariffs[index + 1]
                 const tariffValue = Math.round(percentage * (tariffsForSlider.length - 1))
-
+    
                 updateServiceAndPrice(tariffsForSlider[tariffValue])
-
-                console.log(tariffsForSlider)
             }
-
-            document.addEventListener('mousemove', onMouseMove)
-
-            document.addEventListener('mouseup', () => {
+    
+            document.addEventListener('mousemove', onMove)
+            document.addEventListener('touchmove', onMove)
+    
+            const stopDrag = () => {
                 isDragging = false
-                document.removeEventListener('mousemove', onMouseMove)
-            }, { once: true })
-        })
-    })
+                document.removeEventListener('mousemove', onMove)
+                document.removeEventListener('touchmove', onMove)
+            }
+    
+            document.addEventListener('mouseup', stopDrag, { once: true })
+            document.addEventListener('touchend', stopDrag, { once: true })
+        }
+    
+        ball.addEventListener('mousedown', startDrag)
+        ball.addEventListener('touchstart', startDrag)
+    })    
 
     scrollIntoView('.rates-button', '.rates')
     scrollIntoView('.intro__start-button', '.bottom')

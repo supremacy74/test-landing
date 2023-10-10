@@ -39,6 +39,7 @@ body {
     font-weight: 600;
     height: fit-content;
     font-size: .875rem;
+    color: #121212;
     width: fit-content;
     padding: 1.0rem 2.0rem;
     cursor: pointer;
@@ -472,6 +473,7 @@ body {
 
 @media (min-width: 576px) {
     .advantages__list {
+        zoom: .85;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
     }
@@ -479,7 +481,6 @@ body {
 
 @media (min-width: 992px) {
     .advantages__list {
-        zoom: .85;
         grid-template-columns: repeat(4, 1fr);
     }
 }
@@ -777,11 +778,18 @@ body {
 
 @media (min-width: 992px) {
     .rates__items {
-        zoom: .90;
+        zoom: .87;
     }
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1980px) {
+    .rates__items {
+        gap: 2.5rem;
+        zoom: .95;
+    }
+}
+
+@media (min-width: 1980px) {
     .rates__items {
         zoom: 1;
         gap: 9.5rem;
